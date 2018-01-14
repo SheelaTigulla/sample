@@ -1,0 +1,52 @@
+<div class="sess-review-filter" generic-dialog panel-title="{{'Filter Results' | translate:'filterResults'}}"
+		confirm-text="{{'Submit' | translate:'submit'}}" cancel-text="{{'Cancel' | translate:'cancel'}}"
+		confirm-fn="$close()" cancel-fn="$dismiss()" show-button3="true" button3-text="Reset" button3-fn="clearAll()">
+	<div class="row filter-body">
+		<div class="col-md-6 col-xs-6">
+			<div class="filter-panel-title" translate="advancedCategories">Advanced Categories</div>
+			<div ng-repeat="advancedFilter in filter.edittingFilters.advancedFilters|filter:{dialogFilter:true}" class="toggle-group">
+				<span class="cursor-pointer" ng-click="filter.edittingFilters.selectedAdvancedCategory = (advancedFilter==filter.edittingFilters.selectedAdvancedCategory?null:advancedFilter)">
+					<div class="check-circle" ng-class="{'checked':filter.edittingFilters.selectedAdvancedCategory===advancedFilter}">
+						<div></div>
+					</div>
+					<span class="filter-label">{{advancedFilter.label | translate: advancedFilter.key}}</span>
+				</span>
+				<ng-include ng-show="advancedFilter.templateUrl" src="advancedFilter.templateUrl"></ng-include>
+			</div>
+		</div>
+		<div class="col-md-6 col-xs-6">
+			<div class="filter-panel-title" translate="genericFiltering">Generic Filtering</div>
+			<div ng-repeat="genericFilter in filter.edittingFilters.genericFilters" class="toggle-group">
+				<div class="switch-container" simple-switch on="genericFilter.on" ng-click="genericFilter.on = !genericFilter.on"></div>
+				<span class="filter-label">{{genericFilter.label | translate: genericFilter.key}}</span>
+				<ng-include ng-show="genericFilter.templateUrl" src="genericFilter.templateUrl"></ng-include>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="filterVehicleCountSelect.html">
+	<select class="vehicle-count-select"
+			ng-model="filter.edittingFilters.selectedVehicleOption"
+			ng-options="item.label for item in vehicleFilterDropdown track by item.label">
+	</select>
+</script>
+<script type="text/ng-template" id="filterLineAbbrTextInput.html">
+	<input type="text" class="line-abbr-input"
+			 ng-model="filter.edittingFilters.lineAbbrInput">
+</script>
+<script type="text/ng-template" id="filterAverageAgeSelect.html">
+	<select class="average-age-select"
+			 ng-model="filter.edittingFilters.selectedAvgAgeOption"
+			 ng-options="item.label for item in avgAgeDropdown track by item.label"
+			 ng-change="genericFilter.on=true">
+	</select>
+</script>
+<script type="text/ng-template" id="filterPartNumberTextInput.html">
+	<input type="text" class="part-num-input" 
+			 ng-model="filter.edittingFilters.partNumberInput">
+</script>
+<script type="text/ng-template" id="filterGroupCodeTextInput.html">
+	<input type="text" class="group-input" maxlength=3 
+			 ng-model="filter.edittingFilters.groupCodeInput">
+	
+</script>

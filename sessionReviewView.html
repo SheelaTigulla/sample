@@ -1,0 +1,9 @@
+<!-- <button class="btn btn-default" ui-sref="session.reviewExpanded({sessionId: session.sessionId})">Expanded View</button> -->
+<div class="widgets-workspace full-height">
+	<div ng-repeat="widget in vm.regularReviewWidgets"
+			ng-show="vm.maxWidget == null || widget == vm.maxWidget"
+			ng-class="{'widget-maximized':widget == vm.maxWidget}"
+			class="{{widget.class}}" id="{{widget.id}}}">
+		<ng-include src="widget.template"></ng-include>
+	</div>
+</div>

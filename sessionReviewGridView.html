@@ -1,0 +1,35 @@
+<!--TODO: obsolete/unused?-->
+<div class="container-fluid widgets-workspace full-height" style="padding-left:0; padding-right:0;">
+    <!--     <div gridster="gridsterOpts" id="review-grid">
+        <ul ng-controller="SessionReviewCtrl">
+            <li class="list-grid-item flex-column-container" gridster-item="item" ng-repeat="item in itemOptions | filter: filterWidget">
+                <div ng-include src="item.template" include-replace></div>
+            </li>
+        </ul>
+    </div>
+    <div class="review-widgets-control">
+        <button class="btn btn-sm" ng-class="widget.hide?'btn-default': 'btn-primary'" ng-repeat="widget in itemOptions" ng-click="toggleWidget(widget)">
+            {{widget.id}}
+        </button>
+        <button class="btn btn-sm btn-danger" ng-click="resetLayout()">Reset</button>
+    </div> -->
+    <div ng-controller="SessionReviewCtrl" class="full-height">
+        <!--         <div class="col-md-6" ng-repeat="item in itemOptions" resizable resize-options="columnResizeOptions" style="border:3px solid red">
+            <li>
+                <djv ng-include src="item.template" include-replace></djv>
+            </li>
+        </div>
+ -->
+        <div hori-resize class="full-height">
+        <!-- <div hori-resize class="full-height"> -->
+            <div hori-item vert-resize class="col-md-4 col full-height flex-column-container left-container">
+                <div vert-item class="widget sku-table-item" ng-include src="standardItems[0].template" resizable resize-options="{'handles':'s', distance: 15}"></div>
+                <div vert-item class="widget" ng-include src="standardItems[2].template"></div>
+            </div>
+            <div hori-item vert-resize class="col-md-8 col full-height flex-column-container" style="padding-left:10px">
+                <div vert-item class="widget" ng-include src="standardItems[1].template" resizable resize-options="{'handles':'s', distance: 15}"></div>
+                <div vert-item class="widget position-relative" ng-include src="standardItems[3].template"></div>
+            </div>
+        </div>
+    </div>
+</div>

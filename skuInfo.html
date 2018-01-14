@@ -1,0 +1,45 @@
+<div class="panel panel-pulse border flex-column-intermedia sku-info-panel full-height" ng-controller="SkuInfoCtrl">
+	<div class="panel-heading">
+		<span translate="sKUInfo">SKU Info</span>
+		<span class="pull-right" ng-show="pageShare.activeProduct!=null">
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/expand.png'}}" ng-click="vm.maxWidget = widget" ng-show="vm.maxWidget!=widget">
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/min.png'}}" ng-click="vm.maxWidget = null" ng-show="vm.maxWidget==widget"></i>
+					<div dismiss="setting.reviewMap.showConfigPanel= false" class="menu-pop-over sku-info"
+							ng-show="setting.reviewMap.showConfigPanel">
+						I am the pop up panel content
+					</div>
+		</span>
+	</div>
+
+	<div class="panel-body full-height less-panel-header">
+		<div ng-show="!pageShare.activeProduct" class="no-entries" translate="noSkuSelected">No Sku Selected</div>
+		<div class="row full-height " ng-show="pageShare.activeProduct" >
+			<div class="col-md-7">
+				<div class="sku-thumbnail"
+						popover-enable="{{vm.popoverEnable(widget)}}"
+						uib-popover-template="'imagePopover.html'"
+						popover-trigger="'mouseenter'"
+						popover-class="popover-sku-image"
+						popover-append-to-body="true"
+						popover-placement="right-bottom">
+					<img class="sku-info" img-error-src="{{global.fileNotFoundSrc}}"
+							ng-src="{{vm.getImageUrl(widget,false)}}" alt="{{'Image not Found' | translate:'imageNotFound'}}">
+					<i class="glyphicon glyphicon-zoom-in" ng-show="vm.popoverEnable(widget)" ></i>
+				</div>
+
+				<script type="text/ng-template" id="imagePopover.html">
+					<div class="image-container">
+						<img class="sku-image" ng-src="{{vm.getImageUrl(widget,true)}}">
+					</div>
+					<div class="image-caption">{{vm.skuInfoData.sku}} - {{vm.skuInfoData.description}}</div>
+				</script>
+			</div>
+			<div class="col-md-5 full-height">
+				<p ng-repeat="hierarchy in vm.skuInfoData.hierarchy">
+					<a ng-click="onLevelClick(hierarchy)" class="cursor-pointer">{{hierarchy.hierarchyName}} <span ng-show="hierarchy.hierarchyLevel<4">&gt</span></a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+

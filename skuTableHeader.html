@@ -1,0 +1,70 @@
+	<div class="panel-heading sku-detail-table-header">
+		<span translate="sKUDetails">SKU Details</span>
+		<span class="pull-right">
+			<span class="sku-detail-table-hierarchy-filter" ng-if="filter.inUseFilters.nodeId">{{nodeName}}
+					<i class="fa fa-times cursor-pointer"
+							ng-click="filter.inUseFilters.nodeId=null"></i>
+			</span>
+			<span class="sku-detail-table-hierarchy-filter" ng-if="filter.inUseFilters.expensiveItem">Expensive Item
+					<i class="fa fa-times cursor-pointer"
+							ng-click="filter.inUseFilters.expensiveItem=null"></i>
+			</span>
+			<span class="sku-detail-table-hierarchy-filter" ng-if="filter.inUseFilters.highSkuEdit">High SKU Edit
+					<i class="fa fa-times cursor-pointer"
+							ng-click="filter.inUseFilters.highSkuEdit=null"></i>
+			</span>
+			<span class="sku-detail-table-hierarchy-filter" ng-if="filter.inUseFilters.largerOrderQty">Larger Order Quantity
+					<i class="fa fa-times cursor-pointer"
+							ng-click="filter.inUseFilters.largerOrderQty=null"></i>
+			</span>
+			<span id="revw-siteDetails-quickFilter" uib-dropdown class="dropdown  quick-filter-toggle">
+				<span uib-dropdown-toggle class="dropdown-toggle" id="quickFilterDropdown" aria-haspopup="true" aria-expanded="true">
+					<i ng-if="!filter.inUseFilters.selectedAdvancedCategory||filter.inUseFilters.selectedAdvancedCategory.color"
+							class="fa fa-square"
+							ng-style="{'color':filter.inUseFilters.selectedAdvancedCategory.color||'white'}"></i>
+					<img class="quick-filter-icon"
+							ng-if="filter.inUseFilters.selectedAdvancedCategory.quickFilterHeaderIcon"
+							ng-src="{{reviewImgRoot+filter.inUseFilters.selectedAdvancedCategory.quickFilterHeaderIcon}}">
+					{{filter.inUseFilters.selectedAdvancedCategory.label | translate:filter.inUseFilters.selectedAdvancedCategory.key}}
+					<span ng-if="filter.inUseFilters.selectedAdvancedCategory==null" translate="filters">Filters</span>
+					<i class="fa fa-times"
+							ng-if="filter.inUseFilters.selectedAdvancedCategory"
+							ng-click="$event.stopPropagation();filter.inUseFilters.selectedAdvancedCategory=null"></i>
+				</span>
+				<ul class="dropdown-menu dropdown-menu-right pulse-dropdown-menu quick-filter-dropdown" aria-labelledby="quickFilterDropdown">
+					<div class="title" translate="quickFilters">Quick Filters</div>
+					<li ng-repeat="qf in filter.inUseFilters.advancedFilters|filter: {quickFilter:true}"
+							class="list-item cursor-pointer"
+							ng-click="filter.inUseFilters.selectedAdvancedCategory=(filter.inUseFilters.selectedAdvancedCategory==qf?null:qf)">
+						<i class="fa"
+								ng-class="filter.inUseFilters.selectedAdvancedCategory==qf?'fa-check-square active':'fa-square-o'"></i>
+						<i ng-if="qf.color"
+								class="fa fa-square swatch"
+								ng-style="{'color':qf.color}"></i> {{qf.label | translate: qf.key}}
+					</li>
+				</ul>
+			</span>
+
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/expand.png'}}" ng-click="vm.maxWidget = widget; alignHeaderWithDelay()" ng-show="vm.maxWidget!=widget">
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/min.png'}}" ng-click="vm.maxWidget = null; alignHeaderWithDelay()" ng-show="vm.maxWidget==widget"></i>
+
+			<span id="revw-siteDetails-settings" uib-dropdown class="dropdown pull-right">
+				<img uib-dropdown-toggle class="window-control-icon dropdown-toggle cursor-pointer" id="dropdownMenu"
+						ng-src="{{global.imgRoot + '/window-control/gear.png'}}"
+						aria-haspopup="true"
+						aria-expanded="true">
+				<ul class="dropdown-menu dropdown-menu-right pulse-dropdown-menu" aria-labelledby="dropdownMenu">
+					<li id="sess-revw-filter" class="title cursor-pointer" ng-click="crossPage.configClick()" translate="filter">Filter</li>
+					<li class="list-item" translate="columns">Columns</li>
+					<li class="list-item cursor-pointer"
+							ng-repeat="col in pref.skuTablePref.columns|filter:{'hidable':true}  | filter:showColumn"
+							ng-click="col.checked = col.hidable ===false?true: !col.checked; ajaxUpdatePreference(); $event.stopPropagation()">
+						<span class="cursor-pointer">
+							<i class="fa"
+									ng-class="(col.checked == null || col.checked == false)? 'fa-square-o': 'fa-check-square active'"></i>{{col.label | translate:col.key}}
+						</span>
+					</li>
+				</ul>
+			</span>
+		</span>
+	</div>

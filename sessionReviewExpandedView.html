@@ -1,0 +1,27 @@
+<!--TODO: obsolete/unused?-->
+<div class="container">
+	<div class="row">
+		<button class="btn btn-default" ng-click="addColumn()">New column</button>
+		<div class="widgets-workspace" style="border:1px solid black">
+			<div style="border:2px solid blue" ui-sortable="columnSortableOptions" ng-model="layout.columns">
+				<div resizable resize-options="columnResizeOptions" class="col-md-4" ng-repeat="col in layout.columns" style="border:2px solid yellow; min-height: 80px" widget-column>
+					<div ng-hide="$index == 0" style="position:absolute; left:-15px; height:200px; width:10px;background:green; cursor: w-resize"></div>
+					<div style="width:200px;height:20px; background:black" class="col-sort"></div>
+					<div ui-sortable="widgetSortableOptions" ng-model="col.widgets" class="widget-sort" style="min-height:60px; border:1px solid gray">
+						<div widget column-widget class="panel panel-pulse" ng-repeat="widget in col.widgets" widget-config="widget" resizable resize-options="widgetResizeOptions">
+							<div widget-header class="panel-heading pulse-panel-heading" drag-handle>{{widget.title}}</div>
+							<div widget-body ng-include="widget.bodyTemplate">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-repeat="col in layout.columns">
+		{{col|json}}
+	</div>
+</div>
+<script type="text/ng-template" id="markerContent.html">
+	Hello I am the content
+</script>

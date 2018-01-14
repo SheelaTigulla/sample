@@ -1,0 +1,8 @@
+<span ng-transclude></span>
+<span class="form-ctrls pull-right">
+	<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/expand.png'}}" ng-click="vm.maxWidget = widget" ng-show="vm.maxWidget!=widget">
+	<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/min.png'}}" ng-click="vm.maxWidget = null" ng-show="vm.maxWidget==widget">
+	<span pop-over-trigger>
+		<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/gear.png'}}" ng-click="setting.skuTable.showConfigPanel = !setting.skuTable.showConfigPanel">
+	</span>
+</span>

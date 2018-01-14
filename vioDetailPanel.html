@@ -1,0 +1,25 @@
+<div class="vio-panel">
+    <button ng-repeat="tab in tabs" class="btn btn-sm vio-btn btn-default" ng-class="{'current':tab.active}" ng-click="clickTab(tab)">{{tab.title}}</button>
+    <section fixed-header-table-wrapper table-watch="" ng-repeat="tab in tabs" ng-if="tab.active" loading-icon="tab.loading">
+        <div class="content scroll-div" >
+            <table class="table table-striped table-bordered table-condensed">
+            	<colgroup>
+            		<col ng-repeat="col in tab.cols" width="{{col.width}}">
+            	</colgroup>
+                <thead>
+                    <tr class="header">
+                        <th ng-repeat="col in tab.cols" class="{{col.format}}">
+                            <span>{{col.label}}</span>
+                            <div class="header-div">{{col.label}}</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody vs-repeat vs-scroll-parent=".scroll-div">
+                    <tr ng-repeat="row in tab.model">
+                        <td ng-repeat="col in tab.cols" class="{{col.format}}">{{row[col.id] | colFormat:col}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

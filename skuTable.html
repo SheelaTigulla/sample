@@ -1,0 +1,46 @@
+<div class="panel panel-pulse widget flex-column-intermedia" ng-controller="SkuTableCtrl" loading-icon="skuTableLoading" ng-focus="onFocusPanel()">
+	<div ng-include src="headerUrl" include-replace></div>
+	<div ng-show="skuTableDataCount==0" class="no-entries" translate="noEntries">No Entries</div>
+	<div ng-show="skuTableDataCount>0" class="flex-column-intermedia">
+		<section fixed-header-table-wrapper watch-table="{{[vm.skuTableData, pref.skuTablePref, vm.maxWidget]}}" class="flex-column-intermedia">
+			<div id="skuTableContainer" class="scroll-div scroll-y flex-column-intermedia" scroll-inner scroll-bottom="loadMore()" reach-bottom="true" margin-bottom="{{vm.maxWidget==widget?125:305}}" min-height="150">
+				<table class="table table-striped table-striped table-bordered table-condensed sku">
+					<thead>
+					<tr>
+						<th ng-repeat="col in pref.skuTablePref.columns |filter:{'checked': true} | filter:showColumn"
+								ng-click="changeSort(col); alignTableHeader()"
+								ng-class="col.format? col.format:''">
+							<span class="abs-right-icon">{{col.label | translate: col.key}}
+								<i class="fa" ng-style="{'color': col.id == filter.skuTable.sort.field?'black':'lightgray'}"
+										ng-class="col.id==filter.skuTable.sort.field?(filter.skuTable.sort.order=='asc'?'fa-sort-asc':'fa-sort-desc'):'fa-sort'"></i>
+							</span>
+							<div class="header-div">
+								{{col.label | translate: col.key}}
+								<i class="fa" ng-style="{'color': col.id == filter.skuTable.sort.field?'black':'lightgray'}"
+										ng-class="col.id==filter.skuTable.sort.field?(filter.skuTable.sort.order=='asc'?'fa-sort-asc':'fa-sort-desc'):'fa-sort'"></i>
+							</div>
+						</th>
+					</tr>
+					</thead>
+					<!-- <tbody class="sku-table-body" key-nav-row vs-repeat vs-scroll-parent="#scrollContainer"> -->
+					<tbody class="sku-table-body" key-nav-row>
+					<tr ng-repeat="sku in vm.skuTableData" class="sku-item" product="{{sku.productId}}"
+							ng-class="{'active':pageShare.activeProduct == sku}"
+							ng-click="onClickSkuTableRow(sku)">
+						<td ng-repeat="col in pref.skuTablePref.columns |filter:{'checked': true}  | filter:showColumn"
+								ng-class="col.format? col.format:''">
+							{{sku[col.id] | colFormat:col}}
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<div class="paginator">
+			<span dynamic-translate="showingThroughOf" params="{{vm.skuTableData.length}},{{skuTableDataCount}}">Showing</span>
+			<span class="pull-right text-danger paginator-loading" ng-show="loadingMore">
+			<i class="fa fa-spinner loading"></i> <span translate="loadingElip">Loading...</span>
+			</span>
+		</div>
+	</div>
+</div>

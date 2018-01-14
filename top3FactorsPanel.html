@@ -1,0 +1,15 @@
+<generic-dialog panel-title="{{'Top 3 Factors' | translate:'top3Factors'}}"
+    showFooter='false'
+    confirm-text="{{'OK' | translate:'ok'}}"
+    confirm-fn="$close()" hide-cancel-btn="true" cancel-fn="$dismiss()">
+  <div class=" row col-md-12 sess-tooltip">
+    <div class="content">
+      <span ng-show="factors.length===0" translate="factorsNotAvailable">Top 3 Factors are not available for this SKU/Site combination.</span>
+      <ol class="top3-factors-list">
+        <li ng-repeat="factor in factors" uib-tooltip="{{factor.PREDICTOR_LONG_DESC}}" >
+          {{factor.PREDICTOR_DESC}}
+        </li>
+      </ol>
+    </div>
+  </div>
+</generic-dialog>

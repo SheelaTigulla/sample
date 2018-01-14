@@ -1,0 +1,106 @@
+<div class="panel panel-pulse panel-min-height site-sku-detail" ng-controller="SiteSkuDetailCtrl" >
+	<div class="panel-heading">
+		<span translate="siteSKUDetails">Site/SKU Details</span>
+		<span class="pull-right" ng-show="!showErrorMsg">
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/expand.png'}}" ng-click="vm.maxWidget = widget; alignHeaderWithDelay()" ng-show="vm.maxWidget!=widget">
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/min.png'}}" ng-click="vm.maxWidget = null; alignHeaderWithDelay()" ng-show="vm.maxWidget==widget"></i>
+			<span id="revw-siteSkuDetails-settings" uib-dropdown class="dropdown pull-right">
+				<img uib-dropdown-toggle class="window-control-icon dropdown-toggle cursor-pointer" id="dropdownMenu" ng-src="{{global.imgRoot + '/window-control/gear.png'}}" aria-haspopup="true" aria-expanded="true">
+					<ul class="dropdown-menu dropdown-menu-right pulse-dropdown-menu column-options">
+						<div class="title" translate="columns">Columns</div>
+						<li class="list-item cursor-pointer"
+								ng-repeat="col in pref.siteSkuDetailPref.columns|filter:{'hidable':true} | filter:showColumn"
+								ng-click="col.checked = col.hidable ===false?true: !col.checked; ajaxUpdatePreference(); $event.stopPropagation()">
+							<span class="cursor-pointer"><i class="fa" ng-class="(col.checked == null || col.checked == false)? 'fa-square-o': 'fa-check-square active'"></i>{{ col.label | translate: col.key}}</span>
+						</li>
+					</ul>
+			</span>
+		</span>
+	</div>
+	<div ng-show="pageShare.activeProduct==null" class="no-data-selected" translate="noSkuSelected">No Sku Selected</div>
+	<div ng-show="pageShare.activeProduct!=null&&vm.siteSkuDetailData.length==0" class="no-entries" translate="noEntries">No Entries</div>
+	<div ng-show="pageShare.activeProduct!=null" loading-icon="loadingMore">
+		<section fixed-header-table-wrapper watch-table="{{[pref.siteSkuDetailPref, vm.siteSkuDetailData, vm.maxWidget]}}">
+			<div class="scroll-div scroll-y"
+					reach-bottom="true"
+					margin-bottom="{{vm.maxWidget==widget?30:260}}"
+					min-height="150">
+				<table class="table table-striped table-bordered table-condensed">
+					<colgroup>
+						<col span="1" ng-repeat="c in pref.siteSkuDetailPref.columns|filter:{'checked':true}" ng-style="colWidth(c)">
+					</colgroup>
+					<thead>
+					<tr>
+						<th ng-repeat="col in pref.siteSkuDetailPref.columns |filter:{'checked': true} | filter:showColumn"  class="cursor-pointer"
+								ng-click="changeSort(col)"
+								ng-class="col.format? col.format:''">
+							<span class="abs-right-icon">{{col.label | translate: col.key}}
+								<i class="fa" ng-style="{'color': col.id == filter.siteSkuDetail.sort.field?'black':'lightgray'}"
+										ng-class="col.id==filter.siteSkuDetail.sort.field?(filter.siteSkuDetail.sort.order=='asc'?'fa-sort-asc':'fa-sort-desc'):'fa-sort'"></i>
+							</span>
+							<div class="header-div" ng-if= "showColumn(col)">
+							{{col.label | translate: col.key}}
+								<i class="fa" ng-style="{'color': col.id == filter.siteSkuDetail.sort.field?'black':'lightgray'}"
+										ng-class="col.id==filter.siteSkuDetail.sort.field?(filter.siteSkuDetail.sort.order=='asc'?'fa-sort-asc':'fa-sort-desc'):'fa-sort'"></i>
+							</div>
+						</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="sku in vm.siteSkuDetailData | orderBy: filter.siteSkuDetail.sort.field : filter.siteSkuDetail.sort.order != 'asc'"
+							ng-init="index = vm.siteSkuDetailData.indexOf(sku)"
+							ng-style="{'background-color': sku.highlighted?'orange': statusColorMap[sku.colorCode]}">
+						<td ng-repeat="col in pref.siteSkuDetailPref.columns |filter:{'checked': true} | filter:showColumn"
+								ng-class="col.format? col.format:''">
+							<template-include column="col" >{{col.id == 'peerSales'?(accessItems[19] ? (sku[col.id] | criticalityPercent:0) + '%' : null): sku[col.id]}}</template-include>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<div class="paginator">
+			<span dynamic-translate="showingThroughOf" params="{{vm.siteSkuDetailData.length}},{{vm.siteSkuDetailData.length}}">Showing 1 -  of </span>
+			<span class="pull-right text-danger paginator-loading" ng-show="loadingMore">
+			<i class="fa fa-spinner loading"></i> <span translate="loadingElip">Loading...</span>
+			</span>
+		</div>
+	</div>
+
+</div>
+<script type="text/ng-template" id="siteSkuDetailSite.html">
+	<div class="review-site-td">
+		<div class="shield-icon" ng-if="sku.shield == '1'">
+			<img ng-src="{{reviewImgRoot+'system-icon.png'}}">
+		</div>
+		<a class="pulse-link" ng-click="$event.preventDefault(); siteClick(sku)" href="#">{{sku.site}}</a>
+	</div>
+</script>
+<script type="text/ng-template" id="siteSkuDetailOrder.html">
+	<div ng-if="vm.orderNotEditable(sku)">{{sku.order}}</div>
+	<div ng-if="!vm.orderNotEditable(sku)" ng-attr-id="{{'order_' + index}}">
+		<a id="rvw-order-link" class="cursor-pointer" editable-text="sku.order" e-style="width: 75px; height: 25px;" buttons="no"
+				onshow="selectText('order_' + index)"
+				blur="submit"
+				onbeforesave="updateOrderQty($data, sku, index)">{{ sku.order||'0'}}</a>
+	</div>
+</script>
+<script type="text/ng-template" id="siteSkuDetailKeep.html">
+	<div ng-if="vm.keepNotEditable(sku)">{{sku.keep}}</div>
+	<div ng-if="!vm.keepNotEditable(sku)" ng-attr-id="{{'keep_' + index}}" >
+		<a class="cursor-pointer" editable-text="sku.keep" e-style="width: 75px; height: 25px" buttons="no"
+				onshow="selectText('keep_' + index)"
+				blur="submit"
+				onbeforesave="updateKeepQty($data, sku, index)">{{sku.keep||'0'}}</a>
+	</div>
+</script>
+<script type="text/ng-template" id="siteSkuDetailPctMarket.html">
+	<span>{{sku.pctMrkt|percent:2}}</span>
+</script>
+<script type="text/ng-template" id="firstStockDate.html">
+	<span>{{sku.firstStockDate|date:'MM/dd/yy'}}</span>
+</script>
+<script type="text/ng-template" id="siteSkuDetailVio.html">
+  <a class="pulse-link" ng-click="$event.preventDefault(); vioClick(sku)" href="#">{{sku.vio == '-' ? sku.vio : (sku.vio | number)}}</a>
+</script>

@@ -1,0 +1,27 @@
+<div class="panel panel-pulse border full-height review-map" ng-controller="ReviewMapCtrl">
+	<div class="panel-heading" drag-handle>
+		<span translate="map">Map</span>
+		<span class="pull-right" ng-show="pageShare.activeProduct!=null">
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/expand.png'}}" ng-click="vm.maxWidget = widget"
+			 ng-show="vm.maxWidget!=widget">
+			<img class="window-control-icon" ng-src="{{global.imgRoot + '/window-control/min.png'}}" ng-click="vm.maxWidget = null" ng-show="vm.maxWidget==widget">
+			</i>
+		</span>
+	</div>
+	<div max-height-map="vm.maxWidget==widget">
+		<div class="map-marker-legend">
+			<div class="map-marker-legend-item" ng-repeat="icon in gmap.markerIcons">
+				<img ng-src="{{icon.iconUrl}}" alt="">{{icon.label | translate: icon.key}}
+			</div>
+		</div>
+		<ng-map style="height:150px">
+			<marker ng-repeat="p in gmap.markerList"
+					position="{{p.pos}}"
+					icon="{{p.icon}}"
+					on-click="vm.markerClick(p)"
+					title="[{{p.site.slice(0,p.site.indexOf('(')-1)}}]  {{p.Address}}">
+			</marker>
+		</ng-map>
+
+	</div>
+</div>

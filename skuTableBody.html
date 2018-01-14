@@ -1,0 +1,24 @@
+<table class="table table-striped table-striped table-bordered table-condensed sku">
+					<thead>
+					<tr class="header">
+						<th ng-repeat="col in pref.skuTablePref.columns |filter:{'checked': true} " ng-click="changeSort(col)">
+								<span class="abs-right-icon">{{col.label}}
+								<i class="fa" ng-style="{'color': col.id == filter.skuTable.sort.field?'black':'lightgray'}" ng-class="col.id==filter.skuTable.sort.field?(filter.skuTable.sort.order=='asc'?'fa-sort-asc':'fa-sort-desc'):'fa-sort'"></i>
+								</span>
+							<div class="header-div">
+								{{col.label}}
+								<i class="fa" ng-style="{'color': col.id == filter.skuTable.sort.field?'black':'lightgray'}" ng-class="col.id==filter.skuTable.sort.field?(filter.skuTable.sort.order=='asc'?'fa-sort-asc':'fa-sort-desc'):'fa-sort'"></i>
+							</div>
+						</th>
+					</tr>
+					</thead>
+					<tbody vs-repeat vs-scroll-parent=".scroll-div" class="sku-table-body">
+					<tr ng-repeat="sku in vm.skuTableData"
+							ng-class="{'active':pageShare.activeProduct == sku}"
+							ng-click="pageShare.activeProduct = sku"  class="cursor-pointer">
+						<td ng-repeat="col in pref.skuTablePref.columns |filter:{'checked': true} ">
+							{{sku[col.id]}}
+						</td>
+					</tr>
+					</tbody>
+				</table>
